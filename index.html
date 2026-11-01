@@ -6,8 +6,8 @@
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5, user-scalable=yes" />
   <meta name="theme-color" content="#090f1f" />
-  <meta name="description" content="مختبر ذري تفاعلي ثلاثي الأبعاد والجدول الدوري العربي لجميع العناصر الـ118" />
-  <title>مختبر الذرّة | الجدول الدوري العربي ثلاثي الأبعاد</title>
+  <meta name="description" content="مختبر الذرة ثنائي الأبعاد والجدول الدوري العربي لجميع العناصر الـ118" />
+  <title>مختبر الذرّة 2D | الجدول الدوري العربي</title>
   <style>
     :root {
       color-scheme: dark;
@@ -502,12 +502,12 @@
       width: 100%;
       height: 100%;
       display: block;
-      cursor: grab;
+      cursor: default;
       touch-action: none;
     }
 
     #atomCanvas.dragging {
-      cursor: grabbing;
+      cursor: default;
     }
 
     .viewer-top {
@@ -632,7 +632,7 @@
 
     .info-grid {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 6px;
       flex: none;
     }
@@ -684,7 +684,7 @@
 
     .controls {
       display: grid;
-      grid-template-columns: 1.06fr .92fr;
+      grid-template-columns: 1fr;
       gap: 8px;
       flex: none;
     }
@@ -803,7 +803,7 @@
       padding: 10px 20px;
     }
 
-    /* Always-on split layout: never hide the periodic table or the 3D laboratory. */
+    /* Always-on split layout: keep the periodic table and the 2D atom together. */
     @media (max-width:1100px),
     (max-height:650px) {
       .app {
@@ -1056,7 +1056,7 @@
 
       .controls {
         gap: 5px;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
       }
 
       .control-block {
@@ -1319,7 +1319,7 @@
       }
 
       .controls {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        grid-template-columns: 1fr;
         gap: 3px;
       }
 
@@ -1353,7 +1353,7 @@
       }
     }
 
-    /* Landscape phones: left table and right 3D; model controls occupy their own narrow sidebar. */
+    /* Landscape phones: left table and right 2D; model controls occupy their own narrow sidebar. */
     @media (max-height:540px) and (min-width:531px) and (max-width:1100px) {
       .app {
         grid-template-rows: 34px minmax(0, 1fr);
@@ -1568,7 +1568,7 @@
             <circle cx="20" cy="20" r="3" fill="#ff947f" stroke="none" />
           </svg></div>
         <div>
-          <h1>مختبر الذرّة <span style="color:#67dbed">3D</span></h1>
+          <h1>مختبر الذرّة <span style="color:#67dbed">2D</span></h1>
           <p>الجدول الدوري العربي التفاعلي · نموذج بور التعليمي</p>
         </div>
       </div>
@@ -1590,8 +1590,7 @@
         </div>
         <div class="table-wrap">
           <div class="periodic-grid" id="periodicGrid" aria-label="الجدول الدوري الكامل">
-            <div class="table-banner"><b>استكشف عالم العناصر</b><span>اختر عنصرًا لرؤية ذرّته في الفراغ ثلاثي
-                الأبعاد</span>
+            <div class="table-banner"><b>استكشف عالم العناصر</b><span>اختر عنصرًا لرؤية ذرّته من الأمام</span>
               <div class="flare"></div>
             </div>
           </div>
@@ -1605,7 +1604,8 @@
           <h2>النموذج الذري التفاعلي</h2>
         </div>
         <div class="viewer" id="viewer">
-          <canvas id="atomCanvas" aria-label="نموذج ثلاثي الأبعاد قابل للتدوير للذرة"></canvas>
+          <canvas id="atomCanvas"
+            aria-label="نموذج ذري ثنائي الأبعاد من الأمام، نواة محاطة بمدارات دائرية للإلكترونات"></canvas>
           <div class="viewer-top">
             <div class="element-identity">
               <div class="symbol-large" id="bigSymbol"><small id="bigZ">1</small><span id="bigShort">H</span></div>
@@ -1614,15 +1614,15 @@
                 <p id="bigCat">لافلزات · الدورة 1</p>
               </div>
             </div>
-            <div class="viewer-tools"><button type="button" class="iconbtn" id="resetView" title="إعادة زاوية العرض"
-                aria-label="إعادة زاوية العرض">⟲</button><button type="button" class="iconbtn" id="autoRotate"
-                title="تدوير النموذج تلقائياً" aria-label="تدوير تلقائي">⟳</button></div>
+            <div class="viewer-tools"><button type="button" class="iconbtn" id="resetView" title="إعادة العرض"
+                aria-label="إعادة العرض">⌂</button></div>
           </div>
           <div class="viewer-caption">
             <div class="particle-guide"><span><i class="dot" style="background:#58e5ff"></i>إلكترون</span><span><i
                   class="dot" style="background:#ff9983"></i>بروتون</span><span><i class="dot"
-                  style="background:#c29aff"></i>نيوترون</span></div>
-            <div class="viewer-hint">اسحب للتدوير · مرّر للتقريب</div>
+                  style="background:#c29aff"></i>نيوترون</span><span><i class="dot"
+                  style="background:rgba(183,122,255,.65)"></i>نواة</span></div>
+
           </div>
         </div>
         <div class="info-grid">
@@ -1630,19 +1630,12 @@
           <div class="info"><small>البروتونات</small><strong id="dataP">1</strong></div>
           <div class="info"><small>النيوترونات*</small><strong id="dataN">0</strong></div>
           <div class="info"><small>الإلكترونات</small><strong id="dataE">1</strong></div>
-          <div class="info"><small>الشحنة</small><strong id="dataCharge">متعادل</strong></div>
+
         </div>
         <div class="shellbar"><span>توزيع الإلكترونات على الأغلفة</span><strong id="shells">1</strong></div>
         <div class="controls">
           <div class="control-block">
-            <div class="control-label"><span>تعديل الشحنة</span></div>
-            <div class="btnrow"><button type="button" class="ctrlbtn warn" id="removeE">− إلكترون</button><button
-                type="button" class="ctrlbtn primary" id="addE">+ إلكترون</button><button type="button" class="ctrlbtn"
-                id="neutral">تعادل</button></div>
-          </div>
-          <div class="control-block speed-block">
-            <div class="control-label"><span>سرعة الإلكترونات</span><strong id="speedValue">1.0×</strong></div><input
-              type="range" id="speed" min="0" max="3" step="0.1" value="1" aria-label="سرعة دوران الإلكترونات" />
+            <div class="control-label"><span>التحكم بالحركة</span></div>
             <div class="btnrow"><button type="button" class="ctrlbtn" id="pause">إيقاف مؤقت</button><button
                 type="button" class="ctrlbtn" id="resetAtom">إعادة</button></div>
           </div>
@@ -1653,10 +1646,10 @@
   <div class="modal-backdrop" id="helpModal" role="dialog" aria-modal="true" aria-label="تعليمات الاستخدام">
     <div class="modal">
       <h2>كيف تستخدم المختبر؟</h2>
-      <p>الجدول الدوري والنموذج ثلاثي الأبعاد ظاهران معًا على الشاشة. اختر أحد العناصر الـ118 من الجدول، وستتحدّث الذرة
+      <p>الجدول الدوري والنموذج ثنائي الأبعاد ظاهران معًا على الشاشة. اختر أحد العناصر الـ118 من الجدول، وستتحدّث الذرة
         مباشرةً بجانبه أو تحته حسب حجم شاشتك.</p>
-      <p>اسحب على الذرّة لتدويرها في ثلاثة أبعاد، واستعمل عجلة الفأرة أو إيماءة إصبعين للتقريب والتبعيد. غيّر عدد
-        الإلكترونات وشاهد أثر ذلك على شحنة الأيون.</p>
+      <p>يعرض المختبر الذرة بشكل ثنائي الأبعاد من الأمام، وتظهر البروتونات والنيوترونات داخل النواة، والإلكترونات على
+        أغلفة دائرية. يمكنك استخدام عجلة الفأرة أو إيماءة إصبعين للتقريب والتبعيد فقط.</p>
       <p><strong>ملاحظة علمية:</strong> هذا تمثيل بصري مبسط وفق نموذج بور، وليس محاكاة كمّية لمدارات الإلكترونات. عدد
         النيوترونات تقريبي وفق كتلة نظير مرجعي؛ وقد يختلف حسب النظير.</p><button id="helpClose"
         type="button">فهمت</button>
@@ -1814,7 +1807,7 @@ Og|أوغانيسون|Oganesson|294`;
     const SHELL_CAPS = [2, 8, 18, 32, 32, 18, 8];
     function adjustedShells(z, e) { const shells = neutralShells(z); if (e < z) { let amount = z - e; for (let i = shells.length - 1; i >= 0 && amount > 0; i--) { let take = Math.min(amount, shells[i]); shells[i] -= take; amount -= take; } } else if (e > z) { let amount = e - z; let idx = shells.length - 1; while (amount > 0 && idx < 7) { const available = SHELL_CAPS[idx] - shells[idx]; let add = Math.min(amount, Math.max(0, available)); shells[idx] += add; amount -= add; if (amount > 0) { idx++; if (idx < 7 && !shells[idx]) shells[idx] = 0; } } } while (shells.length > 1 && shells[shells.length - 1] === 0) shells.pop(); return shells; }
     const $ = id => document.getElementById(id);
-    const state = { z: 1, e: 1, speed: 1, paused: false, autoRotate: false, filter: null, search: '', yaw: -.35, pitch: .4, zoom: 1, phase: 0 };
+    const state = { z: 1, e: 1, paused: false, filter: null, search: '', zoom: 1, phase: 0 };
     const grid = $('periodicGrid');
     function makeTable() {
       for (let z = 1; z <= 118; z++) {
@@ -1839,104 +1832,162 @@ Og|أوغانيسون|Oganesson|294`;
     }
     function updateAtom() {
       const el = elements[state.z - 1]; const ns = Math.max(0, Math.round(el.mass) - el.z); $('dataZ').textContent = el.z; $('dataP').textContent = el.z; $('dataN').textContent = ns; $('dataE').textContent = state.e;
-      const charge = el.z - state.e; $('dataCharge').textContent = charge === 0 ? 'متعادل' : `${charge > 0 ? '+' : '−'}${Math.abs(charge)}`;
-      $('dataCharge').style.color = charge === 0 ? '#8ff2c8' : charge > 0 ? '#ffc17c' : '#6ed9ff';
       $('shells').textContent = adjustedShells(el.z, state.e).join(' · ');
       if (renderer) renderer.updateGeometry(el.z, state.e, ns);
     }
     $('search').addEventListener('input', e => { state.search = e.target.value; refreshFilter(); });
     $('search').addEventListener('keydown', e => { if (e.key === 'Enter') { const el = Array.from(document.querySelectorAll('.element')).find(b => !b.classList.contains('dim')); if (el) { selectElement(Number(el.dataset.z)); $('search').blur(); } } });
     $('clearSearch').addEventListener('click', () => { state.search = ''; state.filter = null; $('search').value = ''; refreshFilter(); });
-    $('removeE').addEventListener('click', () => { if (state.e > 0) { state.e--; updateAtom(); } });
-    $('addE').addEventListener('click', () => { if (state.e < 118) { state.e++; updateAtom(); } });
-    $('neutral').addEventListener('click', () => { state.e = state.z; updateAtom(); });
-    $('speed').addEventListener('input', e => { state.speed = Number(e.target.value); $('speedValue').textContent = state.speed.toFixed(1) + '×'; });
     $('pause').addEventListener('click', () => { state.paused = !state.paused; $('pause').textContent = state.paused ? 'استئناف' : 'إيقاف مؤقت'; });
-    $('resetAtom').addEventListener('click', () => { state.e = state.z; state.speed = 1; state.paused = false; state.autoRotate = false; state.phase = 0; $('speed').value = 1; $('speedValue').textContent = '1.0×'; $('pause').textContent = 'إيقاف مؤقت'; $('autoRotate').style.color = ''; updateAtom(); });
-    $('resetView').addEventListener('click', () => { state.yaw = -.35; state.pitch = .4; state.zoom = 1; });
-    $('autoRotate').addEventListener('click', () => { state.autoRotate = !state.autoRotate; $('autoRotate').style.color = state.autoRotate ? '#6df5cd' : ''; });
+    $('resetAtom').addEventListener('click', () => { state.e = state.z; state.paused = false; state.phase = 0; state.zoom = 1; $('pause').textContent = 'إيقاف مؤقت'; updateAtom(); });
+    $('resetView').addEventListener('click', () => { state.zoom = 1; });
     $('helpOpen').addEventListener('click', () => { $('helpModal').classList.add('show'); });
     $('helpClose').addEventListener('click', () => { $('helpModal').classList.remove('show'); });
     $('helpModal').addEventListener('click', e => { if (e.target === $('helpModal')) $('helpModal').classList.remove('show'); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') $('helpModal').classList.remove('show'); });
 
-    // Genuine 3D model rendered directly with WebGL, without CDN dependencies.
+    // Clear, purely 2D canvas diagram. No WebGL, 3D projections or 360° rotation.
+    // All nucleons stay inside the visibly bounded nucleus for every element.
     class AtomRenderer {
       constructor(canvas) {
-        this.canvas = canvas; this.gl = canvas.getContext('webgl', { alpha: true, antialias: true, premultipliedAlpha: false }) || canvas.getContext('experimental-webgl'); this.points = []; this.rings = []; this.shells = []; this.radius = 2.3; this.isWebGL = !!this.gl;
-        if (this.gl) { this.initGl(); } else { this.ctx = canvas.getContext('2d'); }
-        this.bindPointer(); this.resize();
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d', { alpha: true });
+        if (!this.ctx) throw new Error('Canvas 2D is not supported');
+        this.shells = [1];
+        this.nucleons = [{ type: 0, x: 0, y: 0 }];
+        this.z = 1;
+        this.bindZoom();
+        this.resize();
       }
-      compile(type, src) { const g = this.gl, s = g.createShader(type); g.shaderSource(s, src); g.compileShader(s); if (!g.getShaderParameter(s, g.COMPILE_STATUS)) throw Error(g.getShaderInfoLog(s)); return s; }
-      createProgram(v, f) { const g = this.gl, p = g.createProgram(); g.attachShader(p, this.compile(g.VERTEX_SHADER, v)); g.attachShader(p, this.compile(g.FRAGMENT_SHADER, f)); g.linkProgram(p); if (!g.getProgramParameter(p, g.LINK_STATUS)) throw Error(g.getProgramInfoLog(p)); return p; }
-      initGl() {
-        const g = this.gl;
-        this.pp = this.createProgram(`attribute vec3 pos;attribute vec4 rgba;attribute float size;uniform mat4 mvp;uniform float pixelScale;varying vec4 color;varying float lighting;void main(){vec4 p=mvp*vec4(pos,1.);gl_Position=p;gl_PointSize=clamp(size*pixelScale*(1.0+0.20*pos.z/8.0),2.0,85.0);color=rgba;lighting=pos.z;}`,
-          `precision mediump float;varying vec4 color;varying float lighting;void main(){vec2 xy=gl_PointCoord*2.0-1.0;float r=dot(xy,xy);if(r>1.0)discard;vec3 n=vec3(xy,sqrt(max(0.0,1.0-r)));float light=0.30+0.70*max(dot(normalize(vec3(-0.45,0.65,1.0)),n),0.0);float glow=pow(1.0-sqrt(r),1.65);vec3 rgb=color.rgb*(light+glow*0.38);float a=color.a*min(1.0,(1.0-smoothstep(.78,1.0,sqrt(r)))*1.25);gl_FragColor=vec4(rgb,a);}`);
-        this.lp = this.createProgram(`attribute vec3 pos;uniform mat4 mvp;void main(){gl_Position=mvp*vec4(pos,1.);}`, `precision mediump float;uniform vec4 lineColor;void main(){gl_FragColor=lineColor;}`);
-        this.pb = g.createBuffer(); this.lb = g.createBuffer();
-        this.pAttr = { pos: g.getAttribLocation(this.pp, 'pos'), rgba: g.getAttribLocation(this.pp, 'rgba'), size: g.getAttribLocation(this.pp, 'size'), mvp: g.getUniformLocation(this.pp, 'mvp'), scale: g.getUniformLocation(this.pp, 'pixelScale') };
-        this.lAttr = { pos: g.getAttribLocation(this.lp, 'pos'), mvp: g.getUniformLocation(this.lp, 'mvp'), color: g.getUniformLocation(this.lp, 'lineColor') };
-        g.enable(g.BLEND); g.blendFunc(g.SRC_ALPHA, g.ONE_MINUS_SRC_ALPHA); g.enable(g.DEPTH_TEST); g.depthFunc(g.LEQUAL);
-      }
-      resize() { const rect = this.canvas.getBoundingClientRect(); if (rect.width < 1 || rect.height < 1) return; const dpr = Math.min(window.devicePixelRatio || 1, 2); let w = Math.round(rect.width * dpr), h = Math.round(rect.height * dpr); if (this.canvas.width !== w || this.canvas.height !== h) { this.canvas.width = w; this.canvas.height = h; } this.w = w; this.h = h; this.scale = dpr; if (this.gl) this.gl.viewport(0, 0, w, h); }
-      updateGeometry(z, e, n) {
-        this.shells = adjustedShells(z, e); const cnt = this.shells.length; this.radius = cnt === 1 ? 2.30 : 1.35 + 0.64 * (cnt - 1);
-        const total = z + n; this.nucleus = []; const rad = total === 1 ? .05 : Math.min(.73, .16 + .043 * Math.cbrt(total));
-        // Uniform volume placement, with a seeded arrangement for reproducible nuclei.
-        const sequence = []; for (let i = 0; i < z; i++)sequence.push(0); for (let i = 0; i < n; i++)sequence.push(1);
-        for (let i = sequence.length - 1; i > 0; i--) { const j = (i * 73 + z * 29) % (i + 1);[sequence[i], sequence[j]] = [sequence[j], sequence[i]]; }
-        for (let i = 0; i < total; i++) { const golden = 2.399963229728653; const zz = 1 - 2 * (i + .5) / total; const theta = i * golden; const rr = Math.sqrt(Math.max(0, 1 - zz * zz)) * rad * Math.cbrt((i + 1) / total); let x = Math.cos(theta) * rr, y = Math.sin(theta) * rr, w = zz * rad * Math.cbrt((i + 1) / total); this.nucleus.push([x, y, w, sequence[i] === 0 ? 1 : 2]); }
-        this.orbits = []; this.electrons = [];
-        for (let s = 0; s < cnt; s++) {
-          const r = cnt === 1 ? 2.25 : 1.2 + (.64 * s); const ax = (s % 2 ? 1 : -1) * (.27 + s * .21), ay = s * .46 + .12;
-          const along = vec => { const [x, y, z] = vec; const cy = Math.cos(ay), sy = Math.sin(ay), cx = Math.cos(ax), sx = Math.sin(ax); return [x * cy + z * sy, y * cx - (z * cy - x * sy) * sx, y * sx + (z * cy - x * sy) * cx]; };
-          const ring = []; for (let k = 0; k <= 144; k++) { const t = k * Math.PI * 2 / 144; ring.push(along([r * Math.cos(t), r * Math.sin(t), 0])); }
-          this.orbits.push(ring);
-          for (let j = 0; j < this.shells[s]; j++) { this.electrons.push({ s, j, count: this.shells[s], r, along, phase: (j / Math.max(this.shells[s], 1)) * Math.PI * 2 + (s * .38) }); }
+      resize() {
+        const b = this.canvas.getBoundingClientRect();
+        if (b.width < 1 || b.height < 1) return;
+        const dpr = Math.min(2.5, window.devicePixelRatio || 1);
+        const w = Math.round(b.width * dpr), hh = Math.round(b.height * dpr);
+        if (w !== this.canvas.width || hh !== this.canvas.height) {
+          this.canvas.width = w;
+          this.canvas.height = hh;
         }
+        this.w = b.width; this.h = b.height; this.dpr = dpr;
       }
-      bindPointer() {
-        const c = this.canvas; let dragging = false, lastX = 0, lastY = 0, lastPinch = 0;
-        c.addEventListener('pointerdown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; c.setPointerCapture(e.pointerId); c.classList.add('dragging'); });
-        c.addEventListener('pointermove', e => { if (!dragging || e.pointerType === 'touch' && this.touches && this.touches.size > 1) return; const dx = e.clientX - lastX, dy = e.clientY - lastY; state.yaw += dx * .009; state.pitch = Math.max(-1.5, Math.min(1.5, state.pitch + dy * .009)); lastX = e.clientX; lastY = e.clientY; });
-        const end = e => { dragging = false; c.classList.remove('dragging'); try { c.releasePointerCapture(e.pointerId); } catch (_e) { } };
-        c.addEventListener('pointerup', end); c.addEventListener('pointercancel', end);
-        c.addEventListener('wheel', e => { e.preventDefault(); state.zoom = Math.max(.58, Math.min(1.9, state.zoom * Math.exp(e.deltaY * .001))); }, { passive: false });
-        this.touches = new Map(); c.addEventListener('pointerdown', e => { if (e.pointerType === 'touch') { this.touches.set(e.pointerId, [e.clientX, e.clientY]); if (this.touches.size === 2) { const a = [...this.touches.values()]; lastPinch = Math.hypot(a[0][0] - a[1][0], a[0][1] - a[1][1]); } } });
-        c.addEventListener('pointermove', e => { if (e.pointerType === 'touch' && this.touches.has(e.pointerId)) { this.touches.set(e.pointerId, [e.clientX, e.clientY]); if (this.touches.size === 2) { const a = [...this.touches.values()]; const dist = Math.hypot(a[0][0] - a[1][0], a[0][1] - a[1][1]); if (lastPinch > 0) state.zoom = Math.max(.58, Math.min(1.9, state.zoom * lastPinch / Math.max(1, dist))); lastPinch = dist; } } });
-        const remove = e => this.touches.delete(e.pointerId); c.addEventListener('pointerup', remove); c.addEventListener('pointercancel', remove);
+      bindZoom() {
+        const c = this.canvas;
+        c.addEventListener('wheel', e => {
+          e.preventDefault();
+          state.zoom = Math.max(.68, Math.min(1.65, state.zoom * Math.exp(-e.deltaY * .001)));
+        }, { passive: false });
+        // Two-finger pinch changes only the scale, never the orientation.
+        const touches = new Map();
+        let previous = 0;
+        c.addEventListener('pointerdown', e => {
+          if (e.pointerType !== 'touch') return;
+          touches.set(e.pointerId, [e.clientX, e.clientY]);
+          try { c.setPointerCapture(e.pointerId); } catch (_e) { }
+          previous = 0;
+        });
+        c.addEventListener('pointermove', e => {
+          if (!touches.has(e.pointerId)) return;
+          touches.set(e.pointerId, [e.clientX, e.clientY]);
+          if (touches.size !== 2) return;
+          const pts = [...touches.values()];
+          const next = Math.hypot(pts[0][0] - pts[1][0], pts[0][1] - pts[1][1]);
+          if (previous > 0) state.zoom = Math.max(.68, Math.min(1.65, state.zoom * next / previous));
+          previous = next;
+        });
+        const end = e => { touches.delete(e.pointerId); previous = 0; };
+        c.addEventListener('pointerup', end);
+        c.addEventListener('pointercancel', end);
+      }
+      updateGeometry(z, e, n) {
+        this.z = z;
+        this.shells = adjustedShells(z, e);
+        const total = z + n;
+        // A deterministic sunflower packing: visible protons and neutrons are always
+        // centred *within* the nuclear boundary, including the 118th element.
+        const types = Array.from({ length: total }, (_, i) => i < z ? 0 : 1);
+        // Spread both colours through the nucleus rather than separating in two halves.
+        let seed = (z * 1103515245 + n * 12345) >>> 0;
+        for (let i = types.length - 1; i > 0; i--) {
+          seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+          const j = seed % (i + 1);
+          [types[i], types[j]] = [types[j], types[i]];
+        }
+        const g = 2.399963229728653;
+        this.nucleons = types.map((type, i) => {
+          const theta = i * g;
+          const r = Math.sqrt((i + .4) / total) * .88;
+          return { type, x: r * Math.cos(theta), y: r * Math.sin(theta) };
+        });
+      }
+      disc(ctx, x, y, r, fill, stroke) {
+        ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fillStyle = fill; ctx.fill();
+        if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = Math.max(.4, r * .12); ctx.stroke(); }
       }
       render() {
-        this.resize(); if (!this.w || !this.h) return; const w = this.w, h = this.h;
-        const aspect = w / h, dist = this.radius * 3.35 * state.zoom * Math.max(1, .96 / aspect);
-        const projection = perspective(.80, aspect, .1, 150); const rotation = multiply(rotateY(state.yaw), rotateX(state.pitch)); const view = translate(0, 0, -dist); const mvp = multiply(projection, multiply(view, rotation));
-        const current = []; for (const nuc of this.nucleus) { const [x, y, z, type] = nuc; const size = (this.nucleus.length < 4 ? 32 : this.nucleus.length < 25 ? 13 : Math.max(5.2, 10 - this.nucleus.length / 65)); const rgb = type === 1 ? [1, .57, .47] : [.75, .62, 1]; current.push(x, y, z, ...rgb, 1, size); }
-        const electronSize = this.electrons.length > 60 ? 10 : this.electrons.length > 20 ? 12 : 16;
-        for (const el of this.electrons) { const a = el.phase + state.phase * (1.95 / Math.sqrt(el.s + 1)); const [x, y, z] = el.along([el.r * Math.cos(a), el.r * Math.sin(a), 0]); current.push(x, y, z, .22, .91, 1, 1, electronSize); }
-        if (this.isWebGL) {
-          const g = this.gl; g.clearColor(0, 0, 0, 0); g.clear(g.COLOR_BUFFER_BIT | g.DEPTH_BUFFER_BIT);
-          g.useProgram(this.lp); g.uniformMatrix4fv(this.lAttr.mvp, false, mvp); g.bindBuffer(g.ARRAY_BUFFER, this.lb);
-          g.enableVertexAttribArray(this.lAttr.pos); g.vertexAttribPointer(this.lAttr.pos, 3, g.FLOAT, false, 0, 0);
-          g.depthMask(false); for (let s = 0; s < this.orbits.length; s++) { const ring = new Float32Array(this.orbits[s].flat()); g.bufferData(g.ARRAY_BUFFER, ring, g.DYNAMIC_DRAW); const hue = s % 2 === 0 ? [.21, .78, 1] : [.43, .59, 1]; g.uniform4f(this.lAttr.color, ...hue, s < 3 ? .58 : .34); g.drawArrays(g.LINE_STRIP, 0, ring.length / 3); } g.depthMask(true);
-          g.useProgram(this.pp); g.uniformMatrix4fv(this.pAttr.mvp, false, mvp); g.uniform1f(this.pAttr.scale, Math.min(2.25, Math.max(.7, h / 500)));
-          g.bindBuffer(g.ARRAY_BUFFER, this.pb); g.bufferData(g.ARRAY_BUFFER, new Float32Array(current), g.DYNAMIC_DRAW);
-          const stride = 8 * 4; for (const [key, size, offset] of [['pos', 3, 0], ['rgba', 4, 12], ['size', 1, 28]]) { const loc = this.pAttr[key]; g.enableVertexAttribArray(loc); g.vertexAttribPointer(loc, size, g.FLOAT, false, stride, offset); } g.drawArrays(g.POINTS, 0, current.length / 8);
-        } else { this.renderFallback(current, mvp); }
+        this.resize();
+        const ctx = this.ctx, w = this.w, h = this.h;
+        if (!w || !h) return;
+        ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+        ctx.clearRect(0, 0, w, h);
+        const cx = w / 2, cy = h / 2 + Math.min(9, h * .015);
+        // Fixed 2D front view. The rings are all complete concentric circles.
+        const clearance = Math.min(w, h) < 230 ? 15 : 25;
+        const maxR = Math.max(12, Math.min(w / 2 - clearance, h / 2 - clearance));
+        const R = maxR * state.zoom;
+        const count = this.shells.length;
+        const nucleusR = Math.min(R * .235, Math.max(9, R * .17));
+        const inner = count === 1 ? R * .72 : Math.max(nucleusR + 11, R * .31);
+        const radii = this.shells.map((_, s) => count === 1 ? inner : inner + (R - inner) * s / (count - 1));
+        // Subtle emphasis behind the atom, not a 3D perspective effect.
+        const halo = ctx.createRadialGradient(cx, cy, 1, cx, cy, Math.max(R, 50));
+        halo.addColorStop(0, 'rgba(45,129,169,.14)');
+        halo.addColorStop(.5, 'rgba(25,108,169,.05)');
+        halo.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = halo; ctx.beginPath(); ctx.arc(cx, cy, Math.max(R, 50), 0, Math.PI * 2); ctx.fill();
+        // Orbital rings (Bohr educational representation), never tilted.
+        radii.forEach((r, i) => {
+          ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+          ctx.lineWidth = Math.max(.85, Math.min(2.1, R * .008));
+          ctx.strokeStyle = i === 0 ? 'rgba(65,217,246,.77)' : 'rgba(86,151,240,.56)';
+          ctx.stroke();
+        });
+        // Draw a physically contained nucleus, with a definite boundary.
+        const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, nucleusR * 1.45);
+        glow.addColorStop(0, 'rgba(131,115,224,.24)');
+        glow.addColorStop(.7, 'rgba(87,86,177,.18)');
+        glow.addColorStop(1, 'rgba(87,86,177,0)');
+        ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(cx, cy, nucleusR * 1.45, 0, Math.PI * 2); ctx.fill();
+        this.disc(ctx, cx, cy, nucleusR, '#26334f', 'rgba(187,169,255,.72)');
+        ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, nucleusR * .96, 0, Math.PI * 2); ctx.clip();
+        const total = this.nucleons.length;
+        // With many nucleons, make smaller *true 2D* discs so they stay in the circle.
+        const dotR = Math.min(nucleusR * .28, Math.max(.7, nucleusR * .82 / Math.sqrt(total)));
+        for (const p of this.nucleons) {
+          const x = cx + p.x * (nucleusR - dotR * .85), y = cy + p.y * (nucleusR - dotR * .85);
+          this.disc(ctx, x, y, dotR, p.type === 0 ? '#ff9a83' : '#bca1ff', p.type === 0 ? 'rgba(255,208,188,.65)' : 'rgba(228,207,255,.58)');
+        }
+        ctx.restore();
+        // Electrons appear outside the bounded nucleus, evenly spaced per shell.
+        const many = this.shells.reduce((a, b) => a + b, 0) > 48;
+        const eR = Math.max(2.6, Math.min(many ? 5.4 : 6.9, R * .030));
+        this.shells.forEach((number, s) => {
+          const r = radii[s];
+          for (let j = 0; j < number; j++) {
+            const a = (j / number) * Math.PI * 2 - Math.PI / 2 + s * .23
+              + state.phase * (.65 / Math.sqrt(s + 1));
+            const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
+            ctx.shadowColor = 'rgba(55,220,249,.66)'; ctx.shadowBlur = Math.min(12, eR * 2.2);
+            this.disc(ctx, x, y, eR, '#4be0f8'); ctx.shadowBlur = 0;
+            this.disc(ctx, x - eR * .23, y - eR * .26, Math.max(.65, eR * .21), 'rgba(233,253,255,.86)');
+          }
+        });
       }
-      renderFallback(points, mvp) { const ctx = this.ctx, w = this.w, h = this.h; ctx.clearRect(0, 0, w, h); for (const ring of this.orbits) { ctx.strokeStyle = 'rgba(55,189,255,.5)'; ctx.lineWidth = 1.5; ctx.beginPath(); ring.forEach(([x, y, z], idx) => { const p = project(mvp, [x, y, z], w, h); if (idx === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]); }); ctx.stroke(); } const sort = []; for (let i = 0; i < points.length; i += 8) { const p = project(mvp, points.slice(i, i + 3), w, h); sort.push([...p, ...points.slice(i + 3, i + 8)]); } sort.sort((a, b) => b[2] - a[2]); for (const [x, y, z, r, g, b, a, size] of sort) { const sz = size * Math.min(2, Math.max(.7, h / 500)); ctx.beginPath(); ctx.fillStyle = `rgba(${Math.floor(r * 255)},${Math.floor(g * 255)},${Math.floor(b * 255)},${a})`; ctx.arc(x, y, sz / 2, 0, Math.PI * 2); ctx.fill(); } }
     }
-    function identity() { return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]; }
-    function multiply(a, b) { const out = new Float32Array(16); for (let c = 0; c < 4; c++)for (let r = 0; r < 4; r++) { out[c * 4 + r] = a[r] * b[c * 4] + a[4 + r] * b[c * 4 + 1] + a[8 + r] * b[c * 4 + 2] + a[12 + r] * b[c * 4 + 3]; } return out; }
-    function perspective(fov, aspect, near, far) { const f = 1 / Math.tan(fov / 2), nf = 1 / (near - far); return new Float32Array([f / aspect, 0, 0, 0, 0, f, 0, 0, 0, 0, (far + near) * nf, -1, 0, 0, 2 * far * near * nf, 0]); }
-    function translate(x, y, z) { const m = identity(); m[12] = x; m[13] = y; m[14] = z; return m; }
-    function rotateX(t) { const c = Math.cos(t), s = Math.sin(t); return [1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1]; }
-    function rotateY(t) { const c = Math.cos(t), s = Math.sin(t); return [c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1]; }
-    function project(m, [x, y, z], w, h) { const px = m[0] * x + m[4] * y + m[8] * z + m[12], py = m[1] * x + m[5] * y + m[9] * z + m[13], pz = m[2] * x + m[6] * y + m[10] * z + m[14], pw = m[3] * x + m[7] * y + m[11] * z + m[15]; return [(px / pw + 1) * w / 2, (1 - py / pw) * h / 2, pz / pw]; }
     let renderer = null; makeTable();
-    try { renderer = new AtomRenderer($('atomCanvas')); } catch (err) { console.warn('WebGL setup failed:', err); const c = $('atomCanvas'); const replacement = c.cloneNode(); c.replaceWith(replacement); renderer = new AtomRenderer(replacement); }
+    renderer = new AtomRenderer($('atomCanvas'));
     selectElement(1); refreshFilter();
-    let last = 0; function loop(timestamp) { const delta = Math.min(.050, (timestamp - last) / 1000 || .016); last = timestamp; if (!state.paused) { state.phase += delta * state.speed; if (state.autoRotate) state.yaw += delta * .25; } if (renderer) renderer.render(); requestAnimationFrame(loop); }
+    let last = 0; function loop(timestamp) { const delta = Math.min(.050, (timestamp - last) / 1000 || .016); last = timestamp; if (!state.paused) { state.phase += delta; } if (renderer) renderer.render(); requestAnimationFrame(loop); }
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { state.paused = true; $('pause').textContent = 'استئناف'; }
     requestAnimationFrame(loop);
     window.addEventListener('resize', () => renderer && renderer.resize());
     window.addEventListener('orientationchange', () => setTimeout(() => renderer && renderer.resize(), 150));
