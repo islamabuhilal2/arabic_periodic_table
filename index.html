@@ -1,0 +1,1946 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5, user-scalable=yes" />
+  <meta name="theme-color" content="#090f1f" />
+  <meta name="description" content="مختبر ذري تفاعلي ثلاثي الأبعاد والجدول الدوري العربي لجميع العناصر الـ118" />
+  <title>مختبر الذرّة | الجدول الدوري العربي ثلاثي الأبعاد</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080e1d;
+      --panel: #111c31;
+      --panel2: #15243d;
+      --line: rgba(142, 176, 222, .19);
+      --ink: #eef6ff;
+      --muted: #8ea5c2;
+      --cyan: #57ddf8;
+      --blue: #5e8df7;
+      --mint: #75f2c1;
+      --safe-t: env(safe-area-inset-top, 0px);
+      --safe-b: env(safe-area-inset-bottom, 0px);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: Tahoma, "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      overscroll-behavior: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      cursor: pointer;
+    }
+
+    button:focus-visible,
+    input:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 2px;
+    }
+
+    .app {
+      width: 100%;
+      height: 100vh;
+      height: 100dvh;
+      min-height: 0;
+      display: grid;
+      grid-template-rows: minmax(65px, auto) minmax(0, 1fr);
+      padding: var(--safe-t) max(12px, env(safe-area-inset-right, 12px)) var(--safe-b) max(12px, env(safe-area-inset-left, 12px));
+      gap: 11px;
+      overflow: hidden;
+      background: radial-gradient(ellipse at 64% 9%, rgba(20, 61, 110, .31), transparent 58%), radial-gradient(ellipse at 3% 100%, rgba(16, 91, 112, .13), transparent 44%), #080e1d;
+    }
+
+    .topbar {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-icon {
+      width: 43px;
+      height: 43px;
+      flex: none;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(145deg, #1b557a, #172b55);
+      border: 1px solid rgba(99, 216, 255, .36);
+      box-shadow: 0 0 20px #2ccaf920;
+    }
+
+    .brand-icon svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(16px, 1.7vw, 24px);
+      line-height: 1.25;
+      white-space: nowrap;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: none;
+    }
+
+    .pill {
+      padding: 8px 12px;
+      border: 1px solid rgba(91, 198, 255, .23);
+      border-radius: 30px;
+      color: #a7e9fb;
+      background: #112b41;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .help-btn {
+      border: 1px solid var(--line);
+      background: #1a2940;
+      color: var(--ink);
+      border-radius: 12px;
+      width: 36px;
+      height: 36px;
+      font-size: 19px;
+    }
+
+    .work {
+      display: grid;
+      grid-template-columns: minmax(0, 1.07fr) minmax(0, 1fr);
+      direction: ltr;
+      gap: 12px;
+      min-height: 0;
+    }
+
+    .panel {
+      position: relative;
+      min-width: 0;
+      min-height: 0;
+      direction: rtl;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: linear-gradient(156deg, rgba(18, 32, 54, .96), rgba(12, 21, 39, .98));
+      box-shadow: 0 13px 33px #0003;
+      overflow: hidden;
+    }
+
+    .periodic-panel {
+      display: flex;
+      flex-direction: column;
+      padding: 14px;
+      gap: 9px;
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-height: 30px;
+    }
+
+    .panel-title h2 {
+      font-size: clamp(14px, 1.2vw, 19px);
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    .count-tag {
+      color: var(--cyan);
+      font-size: 12px;
+      background: #173247;
+      border: 1px solid #28607c;
+      border-radius: 9px;
+      padding: 6px 9px;
+      white-space: nowrap;
+    }
+
+    .search-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+    }
+
+    .searchbox {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid rgba(135, 178, 226, .23);
+      border-radius: 10px;
+      background: #09182b;
+      padding: 0 11px;
+      min-height: 38px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .searchbox:focus-within {
+      border-color: #5fc9e9;
+    }
+
+    .searchbox svg {
+      width: 16px;
+      height: 16px;
+      color: #7197b4;
+      flex: none;
+    }
+
+    .searchbox input {
+      height: 36px;
+      outline: none;
+      border: 0;
+      background: none;
+      color: var(--ink);
+      width: 100%;
+      min-width: 0;
+      font-size: 12px;
+    }
+
+    .searchbox input::placeholder {
+      color: #7890aa;
+    }
+
+    .tiny-btn {
+      padding: 8px 12px;
+      border-radius: 10px;
+      color: #b7d0e8;
+      background: #1c304b;
+      border: 1px solid var(--line);
+      white-space: nowrap;
+      font-size: 12px;
+    }
+
+    .table-wrap {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+      position: relative;
+    }
+
+    .periodic-grid {
+      direction: ltr;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      max-height: 550px;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: repeat(18, minmax(0, 1fr));
+      grid-template-rows: repeat(9, minmax(0, 1fr));
+      gap: clamp(2px, .28vw, 5px);
+      isolation: isolate;
+    }
+
+    .element {
+      position: relative;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+      border: 1px solid color-mix(in srgb, var(--e-color) 34%, transparent);
+      background: linear-gradient(145deg, color-mix(in srgb, var(--e-color) 19%, #142037), color-mix(in srgb, var(--e-color) 7%, #101c31));
+      color: var(--ink);
+      border-radius: 6px;
+      padding: 2px 1px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1px;
+      transition: opacity .16s, transform .14s, filter .16s, border-color .16s, box-shadow .16s;
+    }
+
+    .element:hover {
+      z-index: 5;
+      transform: scale(1.09);
+      border-color: var(--e-color);
+      filter: brightness(1.15);
+    }
+
+    .element.active {
+      border: 2px solid #f4fcff;
+      background: linear-gradient(150deg, color-mix(in srgb, var(--e-color) 49%, #172947), color-mix(in srgb, var(--e-color) 17%, #112034));
+      box-shadow: 0 0 0 1px var(--e-color), 0 0 19px color-mix(in srgb, var(--e-color) 34%, transparent);
+      z-index: 6;
+    }
+
+    .element.dim {
+      opacity: .16;
+      filter: saturate(.3);
+    }
+
+    .el-num {
+      position: absolute;
+      top: 2px;
+      left: 3px;
+      color: #d3e2f5;
+      font-size: clamp(6px, .49vw, 9px);
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .el-symbol {
+      font-family: Arial, sans-serif;
+      direction: ltr;
+      font-size: clamp(10px, 1.04vw, 19px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -.5px;
+    }
+
+    .el-name {
+      font-size: clamp(6px, .49vw, 8.6px);
+      line-height: 1.1;
+      color: #d3e3f0;
+      max-width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: clip;
+    }
+
+    .block-placeholder {
+      grid-column: 3;
+      direction: ltr;
+      border: 1px dashed #516a85;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font: 700 clamp(7px, .65vw, 11px) Arial;
+      color: #abbcda;
+      background: #152640;
+    }
+
+    .table-banner {
+      direction: rtl;
+      pointer-events: none;
+      position: absolute;
+      left: 17%;
+      top: 4%;
+      width: 52%;
+      height: 25%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+    }
+
+    .table-banner b {
+      font-size: clamp(15px, 1.65vw, 27px);
+      color: #effaff;
+      letter-spacing: .1px;
+    }
+
+    .table-banner span {
+      font-size: clamp(9px, .87vw, 13px);
+      color: #8eacc5;
+    }
+
+    .table-banner .flare {
+      width: 80px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #52d4f5, transparent);
+    }
+
+    .legend {
+      display: flex;
+      align-content: flex-start;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 5px 10px;
+      flex: none;
+      min-height: 36px;
+    }
+
+    .legend-btn {
+      color: #aac0d7;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 4px;
+      border: none;
+      border-radius: 6px;
+      background: transparent;
+      white-space: nowrap;
+    }
+
+    .legend-btn:hover,
+    .legend-btn.active {
+      background: #253952;
+      color: #fff;
+    }
+
+    .legend-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 3px;
+      flex: none;
+      background: var(--e-color);
+    }
+
+    .table-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      flex: none;
+      color: #93abc6;
+      font-size: 11px;
+      min-height: 21px;
+    }
+
+    .table-foot strong {
+      color: #e9f8ff;
+    }
+
+    .lab-panel {
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+      gap: 10px;
+    }
+
+    .lab-heading {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+      flex: none;
+      min-height: 28px;
+    }
+
+    .lab-heading h2 {
+      font-size: clamp(13px, 1.1vw, 18px);
+      margin: 0;
+    }
+
+    .lab-heading span {
+      font: 700 11px Arial;
+      color: #86f3d8;
+      border: 1px solid #20735f;
+      border-radius: 7px;
+      padding: 5px 7px;
+      background: #0d3735;
+    }
+
+    .viewer {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      border: 1px solid #28405d;
+      border-radius: 14px;
+      overflow: hidden;
+      background: radial-gradient(ellipse 60% 64% at 50% 50%, #183552 0%, #101d36 42%, #081325 100%);
+      touch-action: none;
+      user-select: none;
+    }
+
+    .viewer::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .25;
+      background-image: radial-gradient(#a5dafa 0.7px, transparent 1px);
+      background-size: 27px 27px;
+      mask-image: radial-gradient(ellipse, black 20%, transparent 88%);
+    }
+
+    #atomCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: grab;
+      touch-action: none;
+    }
+
+    #atomCanvas.dragging {
+      cursor: grabbing;
+    }
+
+    .viewer-top {
+      position: absolute;
+      inset: 12px 13px auto 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .element-identity {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .symbol-large {
+      direction: ltr;
+      width: 52px;
+      height: 54px;
+      flex: none;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      font: 800 25px Arial;
+      color: #e9ffff;
+      border: 1px solid var(--current-color, #58d6e7);
+      background: color-mix(in srgb, var(--current-color, #58d6e7) 25%, #12253e);
+    }
+
+    .symbol-large small {
+      position: absolute;
+      top: 4px;
+      left: 5px;
+      font-size: 9px;
+      color: #d9f5f6;
+    }
+
+    .element-identity h3 {
+      margin: 0 0 5px;
+      font-size: 17px;
+    }
+
+    .element-identity p {
+      margin: 0;
+      color: #88accc;
+      font-size: 10px;
+    }
+
+    .viewer-tools {
+      pointer-events: auto;
+      display: flex;
+      gap: 5px;
+    }
+
+    .iconbtn {
+      border: 1px solid #315071;
+      border-radius: 9px;
+      background: #152945e8;
+      color: #c0e6fb;
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      font-size: 17px;
+    }
+
+    .iconbtn:hover {
+      background: #244262;
+    }
+
+    .viewer-caption {
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 5px;
+      pointer-events: none;
+    }
+
+    .viewer-hint {
+      background: #101f35cf;
+      border: 1px solid #28445e;
+      color: #b7d0eb;
+      font-size: 10px;
+      padding: 7px 9px;
+      border-radius: 8px;
+    }
+
+    .particle-guide {
+      display: flex;
+      gap: 9px;
+      align-items: center;
+      flex-wrap: wrap;
+      background: #101f35b8;
+      border: 1px solid #28445e;
+      padding: 7px 9px;
+      border-radius: 8px;
+    }
+
+    .particle-guide span {
+      font-size: 10px;
+      color: #a9c2dc;
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+      flex: none;
+    }
+
+    .info {
+      min-width: 0;
+      padding: 10px 5px;
+      background: #12253c;
+      border: 1px solid #263e5b;
+      border-radius: 11px;
+      text-align: center;
+    }
+
+    .info small {
+      display: block;
+      color: #92abc8;
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .info strong {
+      display: block;
+      margin-top: 7px;
+      color: #f2f9ff;
+      font: 700 clamp(13px, 1.25vw, 19px) Arial, Tahoma, sans-serif;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .shellbar {
+      background: #0c1e33;
+      border-radius: 9px;
+      padding: 8px 10px;
+      color: #a6bdd8;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 7px;
+      flex: none;
+    }
+
+    .shellbar strong {
+      color: #60e4f5;
+      direction: ltr;
+      font-size: 12px;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1.06fr .92fr;
+      gap: 8px;
+      flex: none;
+    }
+
+    .control-block {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      background: #101f35;
+      border: 1px solid #253d55;
+      border-radius: 11px;
+      padding: 9px 10px;
+      min-width: 0;
+    }
+
+    .control-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      color: #b3c9e3;
+      font-size: 11px;
+    }
+
+    .control-label strong {
+      color: var(--cyan);
+      font: 700 12px Arial, Tahoma;
+    }
+
+    .btnrow {
+      display: flex;
+      gap: 6px;
+      flex-wrap: nowrap;
+      min-width: 0;
+    }
+
+    .ctrlbtn {
+      min-width: 0;
+      flex: 1;
+      color: #e4f1ff;
+      background: #233a57;
+      border: 1px solid #365473;
+      border-radius: 9px;
+      min-height: 34px;
+      padding: 7px 5px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .ctrlbtn:hover {
+      background: #33516f;
+    }
+
+    .ctrlbtn.primary {
+      background: linear-gradient(135deg, #117e92, #15506a);
+      border-color: #188d9c;
+      color: #fff;
+    }
+
+    .ctrlbtn.warn {
+      color: #ffd5c7;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 18px;
+      accent-color: #40d6ed;
+      cursor: pointer;
+    }
+
+    .mobile-tabs {
+      display: none;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      background: #040811c9;
+      display: none;
+      place-items: center;
+      padding: 18px;
+    }
+
+    .modal-backdrop.show {
+      display: grid;
+    }
+
+    .modal {
+      direction: rtl;
+      width: min(450px, 100%);
+      background: #18283f;
+      border: 1px solid #38617d;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 30px 80px #0009;
+    }
+
+    .modal h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .modal p {
+      line-height: 1.85;
+      font-size: 13px;
+      color: #c6d6e8;
+    }
+
+    .modal button {
+      border: 0;
+      background: #177b90;
+      color: white;
+      border-radius: 9px;
+      padding: 10px 20px;
+    }
+
+    /* Always-on split layout: never hide the periodic table or the 3D laboratory. */
+    @media (max-width:1100px),
+    (max-height:650px) {
+      .app {
+        grid-template-rows: 44px minmax(0, 1fr);
+        gap: 6px;
+        padding: var(--safe-t) 6px var(--safe-b);
+      }
+
+      .topbar {
+        min-height: 0;
+        gap: 6px;
+      }
+
+      .brand {
+        gap: 7px;
+      }
+
+      .brand-icon {
+        width: 33px;
+        height: 33px;
+        border-radius: 9px;
+      }
+
+      .brand-icon svg {
+        width: 23px;
+        height: 23px;
+      }
+
+      .brand h1 {
+        font-size: clamp(13px, 2vw, 18px);
+      }
+
+      .brand p {
+        display: none;
+      }
+
+      .pill {
+        font-size: 9px;
+        padding: 5px 7px;
+      }
+
+      .help-btn {
+        width: 29px;
+        height: 29px;
+        font-size: 15px;
+      }
+
+      .mobile-tabs {
+        display: none !important;
+      }
+
+      .work {
+        display: grid;
+        grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
+        grid-template-rows: minmax(0, 1fr);
+        gap: 6px;
+      }
+
+      .panel {
+        display: flex !important;
+        height: auto;
+        min-height: 0;
+        border-radius: 12px;
+      }
+
+      .periodic-panel {
+        padding: 7px;
+        gap: 4px;
+      }
+
+      .panel-title {
+        min-height: 20px;
+      }
+
+      .panel-title h2 {
+        font-size: clamp(12px, 1.45vw, 17px);
+      }
+
+      .count-tag {
+        font-size: 10px;
+        padding: 3px 5px;
+      }
+
+      .search-row {
+        min-height: 28px;
+      }
+
+      .searchbox {
+        min-height: 28px;
+        padding: 0 6px;
+      }
+
+      .searchbox input {
+        height: 27px;
+        font-size: 10px;
+      }
+
+      .tiny-btn {
+        font-size: 10px;
+        padding: 5px 7px;
+      }
+
+      .table-wrap {
+        justify-content: center;
+      }
+
+      .periodic-grid {
+        max-height: none;
+        gap: 2px;
+      }
+
+      .table-banner {
+        display: none;
+      }
+
+      .element {
+        border-radius: 3px;
+        padding: 1px 0;
+        gap: 0;
+      }
+
+      .el-num {
+        font-size: clamp(5px, .68vw, 8px);
+        left: 1px;
+        top: 1px;
+      }
+
+      .el-symbol {
+        font-size: clamp(8px, 1.45vw, 15px);
+      }
+
+      .el-name {
+        font-size: clamp(5px, .65vw, 8px);
+      }
+
+      .block-placeholder {
+        font-size: clamp(6px, .85vw, 10px);
+        border-radius: 3px;
+      }
+
+      .legend {
+        gap: 1px 5px;
+        min-height: 22px;
+      }
+
+      .legend-btn {
+        font-size: 8px;
+        padding: 1px;
+      }
+
+      .legend-dot {
+        width: 6px;
+        height: 6px;
+      }
+
+      .table-foot {
+        min-height: 15px;
+        font-size: 9px;
+      }
+
+      .lab-panel {
+        padding: 7px;
+        gap: 5px;
+      }
+
+      .lab-heading {
+        min-height: 19px;
+      }
+
+      .lab-heading h2 {
+        font-size: 13px;
+      }
+
+      .lab-heading span {
+        font-size: 9px;
+        padding: 3px 5px;
+      }
+
+      .viewer-top {
+        inset: 7px 8px auto 8px;
+      }
+
+      .symbol-large {
+        width: 39px;
+        height: 41px;
+        font-size: 20px;
+        border-radius: 9px;
+      }
+
+      .element-identity h3 {
+        font-size: 13px;
+        margin: 0 0 3px;
+      }
+
+      .element-identity p {
+        font-size: 9px;
+      }
+
+      .iconbtn {
+        width: 27px;
+        height: 27px;
+        font-size: 14px;
+      }
+
+      .viewer-caption {
+        left: 5px;
+        right: 5px;
+        bottom: 5px;
+      }
+
+      .viewer-hint {
+        font-size: 8px;
+        padding: 4px;
+      }
+
+      .particle-guide {
+        gap: 5px;
+        padding: 4px;
+      }
+
+      .particle-guide span {
+        font-size: 8px;
+      }
+
+      .info-grid {
+        gap: 4px;
+      }
+
+      .info {
+        padding: 5px 2px;
+      }
+
+      .info small {
+        font-size: 9px;
+      }
+
+      .info strong {
+        font-size: 13px;
+        margin-top: 3px;
+      }
+
+      .shellbar {
+        padding: 5px 7px;
+        font-size: 10px;
+      }
+
+      .shellbar strong {
+        font-size: 10px;
+      }
+
+      .controls {
+        gap: 5px;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .control-block {
+        gap: 4px;
+        padding: 5px 6px;
+        border-radius: 8px;
+      }
+
+      .control-label {
+        font-size: 9px;
+      }
+
+      .control-label strong {
+        font-size: 10px;
+      }
+
+      .btnrow {
+        gap: 3px;
+      }
+
+      .ctrlbtn {
+        min-height: 25px;
+        padding: 4px 2px;
+        font-size: 9px;
+        border-radius: 6px;
+      }
+
+      input[type="range"] {
+        height: 13px;
+      }
+    }
+
+    /* Portrait phones/tablets: both full panels stacked, always on screen, no page scrolling. */
+    @media (max-width:900px) and (orientation:portrait) {
+      .work {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: minmax(0, 0.46fr) minmax(0, 0.54fr);
+        gap: 5px;
+      }
+
+      .panel {
+        min-height: 0;
+      }
+
+      .periodic-panel {
+        padding: 6px;
+        gap: 3px;
+      }
+
+      .periodic-grid {
+        gap: 1.5px;
+      }
+
+      .el-num {
+        font-size: clamp(5px, 1.05vw, 8px);
+      }
+
+      .el-symbol {
+        font-size: clamp(8px, 2.3vw, 14px);
+      }
+
+      .el-name {
+        font-size: clamp(5px, 1.1vw, 8px);
+      }
+
+      .legend {
+        gap: 1px 6px;
+        min-height: 20px;
+      }
+
+      .table-foot {
+        display: none;
+      }
+
+      .lab-panel {
+        padding: 6px;
+        gap: 4px;
+      }
+
+      .viewer {
+        flex: 1;
+      }
+    }
+
+    @media (max-width:530px) and (orientation:portrait) {
+      .app {
+        grid-template-rows: 36px minmax(0, 1fr);
+        gap: 4px;
+        padding: var(--safe-t) 4px var(--safe-b);
+      }
+
+      .brand-icon {
+        width: 28px;
+        height: 28px;
+      }
+
+      .brand-icon svg {
+        width: 19px;
+        height: 19px;
+      }
+
+      .brand h1 {
+        font-size: 14px;
+      }
+
+      .top-actions .pill {
+        display: none;
+      }
+
+      .help-btn {
+        width: 27px;
+        height: 27px;
+      }
+
+      .work {
+        grid-template-rows: minmax(0, .445fr) minmax(0, .555fr);
+        gap: 4px;
+      }
+
+      .periodic-panel {
+        padding: 4px;
+        gap: 3px;
+      }
+
+      .panel-title {
+        min-height: 18px;
+      }
+
+      .panel-title h2 {
+        font-size: 12px;
+      }
+
+      .count-tag {
+        font-size: 9px;
+        padding: 3px 4px;
+      }
+
+      .search-row,
+      .searchbox {
+        min-height: 25px;
+      }
+
+      .searchbox input {
+        height: 24px;
+        font-size: 10px;
+      }
+
+      .tiny-btn {
+        font-size: 9px;
+        padding: 3px 6px;
+      }
+
+      .periodic-grid {
+        gap: 1px;
+      }
+
+      .el-name {
+        display: none;
+      }
+
+      .el-num {
+        font-size: 5.5px;
+        left: 1px;
+        top: 1px;
+      }
+
+      .el-symbol {
+        font-size: clamp(9px, 2.8vw, 12px);
+        letter-spacing: -.65px;
+      }
+
+      .legend {
+        min-height: 25px;
+        gap: 0 5px;
+      }
+
+      .legend-btn {
+        font-size: 7px;
+        gap: 3px;
+      }
+
+      .legend-dot {
+        width: 5px;
+        height: 5px;
+      }
+
+      .lab-panel {
+        padding: 4px;
+        gap: 3px;
+      }
+
+      .lab-heading {
+        min-height: 17px;
+      }
+
+      .lab-heading h2 {
+        font-size: 12px;
+      }
+
+      .lab-heading span {
+        font-size: 8px;
+        padding: 2px 4px;
+      }
+
+      .viewer {
+        border-radius: 8px;
+      }
+
+      .symbol-large {
+        width: 34px;
+        height: 35px;
+        font-size: 18px;
+      }
+
+      .element-identity {
+        gap: 5px;
+      }
+
+      .element-identity h3 {
+        font-size: 12px;
+      }
+
+      .element-identity p {
+        font-size: 8px;
+      }
+
+      .iconbtn {
+        width: 24px;
+        height: 24px;
+      }
+
+      .viewer-hint {
+        display: none;
+      }
+
+      .particle-guide {
+        gap: 4px;
+      }
+
+      .info {
+        padding: 3px 1px;
+      }
+
+      .info small {
+        font-size: 8px;
+      }
+
+      .info strong {
+        font-size: 12px;
+        margin-top: 2px;
+      }
+
+      .shellbar {
+        padding: 3px 5px;
+        font-size: 9px;
+      }
+
+      .shellbar strong {
+        font-size: 9px;
+      }
+
+      .controls {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 3px;
+      }
+
+      .control-block {
+        padding: 3px;
+        gap: 2px;
+      }
+
+      .control-label {
+        font-size: 8px;
+      }
+
+      .control-label strong {
+        font-size: 9px;
+      }
+
+      .btnrow {
+        gap: 2px;
+      }
+
+      .ctrlbtn {
+        font-size: 8px;
+        min-height: 23px;
+        padding: 2px 1px;
+        white-space: normal;
+        line-height: 1.05;
+      }
+
+      input[type="range"] {
+        height: 10px;
+      }
+    }
+
+    /* Landscape phones: left table and right 3D; model controls occupy their own narrow sidebar. */
+    @media (max-height:540px) and (min-width:531px) and (max-width:1100px) {
+      .app {
+        grid-template-rows: 34px minmax(0, 1fr);
+        gap: 4px;
+        padding: var(--safe-t) 4px var(--safe-b);
+      }
+
+      .work {
+        gap: 4px;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      }
+
+      .periodic-panel {
+        padding: 4px;
+        gap: 3px;
+      }
+
+      .panel-title {
+        min-height: 17px;
+      }
+
+      .panel-title h2 {
+        font-size: 11px;
+      }
+
+      .count-tag {
+        font-size: 8px;
+        padding: 2px 4px;
+      }
+
+      .search-row,
+      .searchbox {
+        min-height: 24px;
+      }
+
+      .searchbox input {
+        height: 22px;
+      }
+
+      .legend {
+        min-height: 16px;
+      }
+
+      .legend-btn {
+        font-size: 7px;
+      }
+
+      .table-foot {
+        display: none;
+      }
+
+      .lab-panel {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) minmax(155px, 44%);
+        grid-template-rows: 17px minmax(0, 1fr) auto auto;
+        gap: 3px;
+        padding: 4px;
+      }
+
+      .lab-heading {
+        grid-column: 1/-1;
+        grid-row: 1;
+        min-height: 17px;
+      }
+
+      .lab-heading h2 {
+        font-size: 11px;
+      }
+
+      .viewer {
+        grid-column: 1;
+        grid-row: 2/5;
+        min-height: 0;
+        min-width: 0;
+        border-radius: 8px;
+      }
+
+      .info-grid {
+        grid-column: 2;
+        grid-row: 2;
+        align-self: end;
+        gap: 2px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .info {
+        padding: 3px 1px;
+      }
+
+      .info small {
+        font-size: 7px;
+      }
+
+      .info strong {
+        font-size: 11px;
+        margin-top: 1px;
+      }
+
+      .shellbar {
+        grid-column: 2;
+        grid-row: 3;
+        padding: 3px;
+        font-size: 8px;
+      }
+
+      .controls {
+        grid-column: 2;
+        grid-row: 4;
+        grid-template-columns: 1fr;
+        gap: 3px;
+      }
+
+      .control-block {
+        padding: 3px;
+        gap: 2px;
+      }
+
+      .control-label {
+        font-size: 8px;
+      }
+
+      .ctrlbtn {
+        min-height: 21px;
+        font-size: 8px;
+        padding: 2px 1px;
+        white-space: normal;
+        line-height: 1.05;
+      }
+
+      .symbol-large {
+        width: 28px;
+        height: 29px;
+        font-size: 15px;
+      }
+
+      .element-identity {
+        gap: 4px;
+      }
+
+      .element-identity h3 {
+        font-size: 10px;
+      }
+
+      .element-identity p {
+        display: none;
+      }
+
+      .viewer-top {
+        inset: 4px 4px auto 4px;
+      }
+
+      .iconbtn {
+        width: 22px;
+        height: 22px;
+      }
+
+      .viewer-hint {
+        display: none;
+      }
+
+      .particle-guide {
+        padding: 2px;
+        gap: 2px;
+      }
+
+      .particle-guide span {
+        font-size: 7px;
+      }
+    }
+
+    @media (max-height:620px) and (max-width:530px) and (orientation:portrait) {
+      .work {
+        grid-template-rows: minmax(0, .435fr) minmax(0, .565fr);
+      }
+
+      .legend {
+        display: none;
+      }
+
+      .viewer-caption {
+        display: none;
+      }
+
+      .symbol-large {
+        width: 28px;
+        height: 29px;
+        font-size: 16px;
+      }
+
+      .element-identity p {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .element {
+        transition: none
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true"><svg fill="none" stroke="#6ee7fa" stroke-width="1.7"
+            viewBox="0 0 40 40">
+            <ellipse cx="20" cy="20" rx="17" ry="7" transform="rotate(55 20 20)" />
+            <ellipse cx="20" cy="20" rx="17" ry="7" transform="rotate(-55 20 20)" />
+            <ellipse cx="20" cy="20" rx="17" ry="7" />
+            <circle cx="20" cy="20" r="3" fill="#ff947f" stroke="none" />
+          </svg></div>
+        <div>
+          <h1>مختبر الذرّة <span style="color:#67dbed">3D</span></h1>
+          <p>الجدول الدوري العربي التفاعلي · نموذج بور التعليمي</p>
+        </div>
+      </div>
+      <div class="top-actions"><button type="button" class="help-btn" id="helpOpen" title="طريقة الاستخدام"
+          aria-label="المساعدة">؟</button></div>
+    </header>
+    <main class="work">
+      <section class="panel periodic-panel" id="periodicPanel" aria-label="الجدول الدوري">
+        <div class="panel-title">
+          <h2>الجدول الدوري للعناصر</h2><span class="count-tag">118 عنصرًا</span>
+        </div>
+        <div class="search-row">
+          <label class="searchbox"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <circle cx="10.7" cy="10.7" r="7" />
+              <path d="m16 16 5 5" />
+            </svg><input id="search" type="search" autocomplete="off" spellcheck="false"
+              placeholder="ابحث عن عنصر باسمه أو رمزه أو رقمه..." aria-label="البحث عن عنصر" /></label>
+          <button type="button" class="tiny-btn" id="clearSearch" title="إلغاء المرشّحات">الكل</button>
+        </div>
+        <div class="table-wrap">
+          <div class="periodic-grid" id="periodicGrid" aria-label="الجدول الدوري الكامل">
+            <div class="table-banner"><b>استكشف عالم العناصر</b><span>اختر عنصرًا لرؤية ذرّته في الفراغ ثلاثي
+                الأبعاد</span>
+              <div class="flare"></div>
+            </div>
+          </div>
+        </div>
+        <div class="legend" id="legend" aria-label="تصنيفات العناصر"></div>
+        <div class="table-foot"><span id="selectionHint">العنصر المحدّد: <strong>هيدروجين (H)</strong></span><span>اضغط
+            أي عنصر لاستكشافه</span></div>
+      </section>
+      <section class="panel lab-panel" id="labPanel" aria-label="النموذج الذري">
+        <div class="lab-heading">
+          <h2>النموذج الذري التفاعلي</h2>
+        </div>
+        <div class="viewer" id="viewer">
+          <canvas id="atomCanvas" aria-label="نموذج ثلاثي الأبعاد قابل للتدوير للذرة"></canvas>
+          <div class="viewer-top">
+            <div class="element-identity">
+              <div class="symbol-large" id="bigSymbol"><small id="bigZ">1</small><span id="bigShort">H</span></div>
+              <div>
+                <h3 id="bigName">هيدروجين</h3>
+                <p id="bigCat">لافلزات · الدورة 1</p>
+              </div>
+            </div>
+            <div class="viewer-tools"><button type="button" class="iconbtn" id="resetView" title="إعادة زاوية العرض"
+                aria-label="إعادة زاوية العرض">⟲</button><button type="button" class="iconbtn" id="autoRotate"
+                title="تدوير النموذج تلقائياً" aria-label="تدوير تلقائي">⟳</button></div>
+          </div>
+          <div class="viewer-caption">
+            <div class="particle-guide"><span><i class="dot" style="background:#58e5ff"></i>إلكترون</span><span><i
+                  class="dot" style="background:#ff9983"></i>بروتون</span><span><i class="dot"
+                  style="background:#c29aff"></i>نيوترون</span></div>
+            <div class="viewer-hint">اسحب للتدوير · مرّر للتقريب</div>
+          </div>
+        </div>
+        <div class="info-grid">
+          <div class="info"><small>العدد الذري</small><strong id="dataZ">1</strong></div>
+          <div class="info"><small>البروتونات</small><strong id="dataP">1</strong></div>
+          <div class="info"><small>النيوترونات*</small><strong id="dataN">0</strong></div>
+          <div class="info"><small>الإلكترونات</small><strong id="dataE">1</strong></div>
+          <div class="info"><small>الشحنة</small><strong id="dataCharge">متعادل</strong></div>
+        </div>
+        <div class="shellbar"><span>توزيع الإلكترونات على الأغلفة</span><strong id="shells">1</strong></div>
+        <div class="controls">
+          <div class="control-block">
+            <div class="control-label"><span>تعديل الشحنة</span></div>
+            <div class="btnrow"><button type="button" class="ctrlbtn warn" id="removeE">− إلكترون</button><button
+                type="button" class="ctrlbtn primary" id="addE">+ إلكترون</button><button type="button" class="ctrlbtn"
+                id="neutral">تعادل</button></div>
+          </div>
+          <div class="control-block speed-block">
+            <div class="control-label"><span>سرعة الإلكترونات</span><strong id="speedValue">1.0×</strong></div><input
+              type="range" id="speed" min="0" max="3" step="0.1" value="1" aria-label="سرعة دوران الإلكترونات" />
+            <div class="btnrow"><button type="button" class="ctrlbtn" id="pause">إيقاف مؤقت</button><button
+                type="button" class="ctrlbtn" id="resetAtom">إعادة</button></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div class="modal-backdrop" id="helpModal" role="dialog" aria-modal="true" aria-label="تعليمات الاستخدام">
+    <div class="modal">
+      <h2>كيف تستخدم المختبر؟</h2>
+      <p>الجدول الدوري والنموذج ثلاثي الأبعاد ظاهران معًا على الشاشة. اختر أحد العناصر الـ118 من الجدول، وستتحدّث الذرة
+        مباشرةً بجانبه أو تحته حسب حجم شاشتك.</p>
+      <p>اسحب على الذرّة لتدويرها في ثلاثة أبعاد، واستعمل عجلة الفأرة أو إيماءة إصبعين للتقريب والتبعيد. غيّر عدد
+        الإلكترونات وشاهد أثر ذلك على شحنة الأيون.</p>
+      <p><strong>ملاحظة علمية:</strong> هذا تمثيل بصري مبسط وفق نموذج بور، وليس محاكاة كمّية لمدارات الإلكترونات. عدد
+        النيوترونات تقريبي وفق كتلة نظير مرجعي؛ وقد يختلف حسب النظير.</p><button id="helpClose"
+        type="button">فهمت</button>
+    </div>
+  </div>
+  <script>
+    'use strict';
+    // Data order: chemical symbol | Arabic element name | English name | reference atomic mass / representative mass number.
+    const RAW = `
+H|هيدروجين|Hydrogen|1.008
+He|هيليوم|Helium|4.0026
+Li|ليثيوم|Lithium|6.94
+Be|بيريليوم|Beryllium|9.0122
+B|بورون|Boron|10.81
+C|كربون|Carbon|12.011
+N|نيتروجين|Nitrogen|14.007
+O|أكسجين|Oxygen|15.999
+F|فلور|Fluorine|18.998
+Ne|نيون|Neon|20.18
+Na|صوديوم|Sodium|22.990
+Mg|مغنيسيوم|Magnesium|24.305
+Al|ألومنيوم|Aluminium|26.982
+Si|سيليكون|Silicon|28.085
+P|فسفور|Phosphorus|30.974
+S|كبريت|Sulfur|32.06
+Cl|كلور|Chlorine|35.45
+Ar|أرجون|Argon|39.948
+K|بوتاسيوم|Potassium|39.098
+Ca|كالسيوم|Calcium|40.078
+Sc|سكانديوم|Scandium|44.956
+Ti|تيتانيوم|Titanium|47.867
+V|فاناديوم|Vanadium|50.942
+Cr|كروم|Chromium|51.996
+Mn|منغنيز|Manganese|54.938
+Fe|حديد|Iron|55.845
+Co|كوبالت|Cobalt|58.933
+Ni|نيكل|Nickel|58.693
+Cu|نحاس|Copper|63.546
+Zn|زنك|Zinc|65.38
+Ga|غاليوم|Gallium|69.723
+Ge|جرمانيوم|Germanium|72.630
+As|زرنيخ|Arsenic|74.922
+Se|سيلينيوم|Selenium|78.971
+Br|بروم|Bromine|79.904
+Kr|كريبتون|Krypton|83.798
+Rb|روبيديوم|Rubidium|85.468
+Sr|سترونشيوم|Strontium|87.62
+Y|إيتريوم|Yttrium|88.906
+Zr|زركونيوم|Zirconium|91.224
+Nb|نيوبيوم|Niobium|92.906
+Mo|موليبدينوم|Molybdenum|95.95
+Tc|تكنيشيوم|Technetium|98
+Ru|روثينيوم|Ruthenium|101.07
+Rh|روديوم|Rhodium|102.91
+Pd|بلاديوم|Palladium|106.42
+Ag|فضة|Silver|107.87
+Cd|كادميوم|Cadmium|112.41
+In|إنديوم|Indium|114.82
+Sn|قصدير|Tin|118.71
+Sb|أنتيمون|Antimony|121.76
+Te|تيلوريوم|Tellurium|127.60
+I|يود|Iodine|126.90
+Xe|زينون|Xenon|131.29
+Cs|سيزيوم|Caesium|132.91
+Ba|باريوم|Barium|137.33
+La|لانثانوم|Lanthanum|138.91
+Ce|سيريوم|Cerium|140.12
+Pr|براسيوديميوم|Praseodymium|140.91
+Nd|نيوديميوم|Neodymium|144.24
+Pm|بروميثيوم|Promethium|145
+Sm|ساماريوم|Samarium|150.36
+Eu|يوروبيوم|Europium|151.96
+Gd|غادولينيوم|Gadolinium|157.25
+Tb|تيربيوم|Terbium|158.93
+Dy|ديسبروسيوم|Dysprosium|162.50
+Ho|هولميوم|Holmium|164.93
+Er|إربيوم|Erbium|167.26
+Tm|ثوليوم|Thulium|168.93
+Yb|إيتربيوم|Ytterbium|173.05
+Lu|لوتيتيوم|Lutetium|174.97
+Hf|هافنيوم|Hafnium|178.49
+Ta|تانتالوم|Tantalum|180.95
+W|تنغستن|Tungsten|183.84
+Re|رينيوم|Rhenium|186.21
+Os|أوزميوم|Osmium|190.23
+Ir|إيريديوم|Iridium|192.22
+Pt|بلاتين|Platinum|195.08
+Au|ذهب|Gold|196.97
+Hg|زئبق|Mercury|200.59
+Tl|ثاليوم|Thallium|204.38
+Pb|رصاص|Lead|207.2
+Bi|بزموت|Bismuth|208.98
+Po|بولونيوم|Polonium|209
+At|أستاتين|Astatine|210
+Rn|رادون|Radon|222
+Fr|فرانسيوم|Francium|223
+Ra|راديوم|Radium|226
+Ac|أكتينيوم|Actinium|227
+Th|ثوريوم|Thorium|232.04
+Pa|بروتكتينيوم|Protactinium|231.04
+U|يورانيوم|Uranium|238.03
+Np|نبتونيوم|Neptunium|237
+Pu|بلوتونيوم|Plutonium|244
+Am|أمريسيوم|Americium|243
+Cm|كوريوم|Curium|247
+Bk|بركليوم|Berkelium|247
+Cf|كاليفورنيوم|Californium|251
+Es|أينشتاينيوم|Einsteinium|252
+Fm|فيرميوم|Fermium|257
+Md|مندليفيوم|Mendelevium|258
+No|نوبليوم|Nobelium|259
+Lr|لورنسيوم|Lawrencium|266
+Rf|رذرفورديوم|Rutherfordium|267
+Db|دوبنيوم|Dubnium|268
+Sg|سيبورغيوم|Seaborgium|269
+Bh|بوهريوم|Bohrium|270
+Hs|هاسيوم|Hassium|277
+Mt|مايتنريوم|Meitnerium|278
+Ds|دارمشتاتيوم|Darmstadtium|281
+Rg|رونتجينيوم|Roentgenium|282
+Cn|كوبرنيسيوم|Copernicium|285
+Nh|نيهونيوم|Nihonium|286
+Fl|فليروفيوم|Flerovium|289
+Mc|موسكوفيوم|Moscovium|290
+Lv|ليفرموريوم|Livermorium|293
+Ts|تينيسين|Tennessine|294
+Og|أوغانيسون|Oganesson|294`;
+    const CATEGORIES = {
+      alkali: { name: 'الفلزات القلوية', color: '#f5ad71' },
+      alkaline: { name: 'الفلزات القلوية الترابية', color: '#f1cf71' },
+      transition: { name: 'الفلزات الانتقالية', color: '#f09ab7' },
+      post: { name: 'الفلزات بعد الانتقالية', color: '#a6a4fa' },
+      metalloid: { name: 'أشباه الفلزات', color: '#8cdfaa' },
+      nonmetal: { name: 'اللافلزات', color: '#58d7d8' },
+      halogen: { name: 'الهالوجينات', color: '#6caff6' },
+      noble: { name: 'الغازات النبيلة', color: '#c29bf2' },
+      lanth: { name: 'اللانثانيدات', color: '#fdac8d' },
+      act: { name: 'الأكتينيدات', color: '#edc178' }
+    };
+    const ZSET = a => new Set(a);
+    const noble = ZSET([2, 10, 18, 36, 54, 86, 118]), halogen = ZSET([9, 17, 35, 53, 85, 117]);
+    const nonmetal = ZSET([1, 6, 7, 8, 15, 16, 34]), metalloid = ZSET([5, 14, 32, 33, 51, 52]);
+    const alkali = ZSET([3, 11, 19, 37, 55, 87]), alkaline = ZSET([4, 12, 20, 38, 56, 88]);
+    const tr = (z) => (z >= 21 && z <= 30) || (z >= 39 && z <= 48) || (z >= 72 && z <= 80) || (z >= 104 && z <= 112);
+    function category(z) { if (noble.has(z)) return 'noble'; if (halogen.has(z)) return 'halogen'; if (nonmetal.has(z)) return 'nonmetal'; if (metalloid.has(z)) return 'metalloid'; if (alkali.has(z)) return 'alkali'; if (alkaline.has(z)) return 'alkaline'; if (z >= 57 && z <= 71) return 'lanth'; if (z >= 89 && z <= 103) return 'act'; if (tr(z)) return 'transition'; return 'post'; }
+    const elements = RAW.trim().split('\n').map((row, i) => { const [symbol, ar, en, m] = row.split('|'); let z = i + 1; return { z, symbol, ar, en, mass: Number(m), cat: category(z), r: 0, c: 0 }; });
+    const periods = [[1, 2], [3, 4, 5, 6, 7, 8, 9, 10], [11, 12, 13, 14, 15, 16, 17, 18], Array.from({ length: 18 }, (_, i) => 19 + i), Array.from({ length: 18 }, (_, i) => 37 + i), [55, 56, ...Array.from({ length: 15 }, (_, i) => 72 + i)], [87, 88, ...Array.from({ length: 15 }, (_, i) => 104 + i)]];
+    periods.forEach((numbers, idx) => { const row = idx + 1; const cols = (row === 1 ? [1, 18] : row <= 3 ? [1, 2, 13, 14, 15, 16, 17, 18] : row <= 5 ? Array.from({ length: 18 }, (_, i) => i + 1) : [1, 2, ...Array.from({ length: 15 }, (_, i) => i + 4)]); numbers.forEach((z, k) => { elements[z - 1].r = row; elements[z - 1].c = cols[k]; }); });
+    for (let z = 57; z <= 71; z++) { elements[z - 1].r = 8; elements[z - 1].c = z - 53; }
+    for (let z = 89; z <= 103; z++) { elements[z - 1].r = 9; elements[z - 1].c = z - 85; }
+    // Ground-state electron configurations, corrected for the best-known main exceptions.
+    const ORBITALS = [['1s', 1, 2], ['2s', 2, 2], ['2p', 2, 6], ['3s', 3, 2], ['3p', 3, 6], ['4s', 4, 2], ['3d', 3, 10], ['4p', 4, 6], ['5s', 5, 2], ['4d', 4, 10], ['5p', 5, 6], ['6s', 6, 2], ['4f', 4, 14], ['5d', 5, 10], ['6p', 6, 6], ['7s', 7, 2], ['5f', 5, 14], ['6d', 6, 10], ['7p', 7, 6]];
+    const CONFIG_EXCEPTIONS = { 24: [['4s', -1], ['3d', 1]], 29: [['4s', -1], ['3d', 1]], 41: [['5s', -1], ['4d', 1]], 42: [['5s', -1], ['4d', 1]], 44: [['5s', -1], ['4d', 1]], 45: [['5s', -1], ['4d', 1]], 46: [['5s', -2], ['4d', 2]], 47: [['5s', -1], ['4d', 1]], 57: [['4f', -1], ['5d', 1]], 58: [['4f', -1], ['5d', 1]], 64: [['4f', -1], ['5d', 1]], 78: [['6s', -1], ['5d', 1]], 79: [['6s', -1], ['5d', 1]], 89: [['5f', -1], ['6d', 1]], 90: [['5f', -2], ['6d', 2]], 91: [['5f', -1], ['6d', 1]], 92: [['5f', -1], ['6d', 1]], 93: [['5f', -1], ['6d', 1]], 96: [['5f', -1], ['6d', 1]], 103: [['6d', -1], ['7p', 1]] };
+    function neutralShells(z) { const cfg = {}; let left = z; for (const [id, n, cap] of ORBITALS) { const electrons = Math.min(left, cap); cfg[id] = electrons; left -= electrons; } for (const [id, change] of (CONFIG_EXCEPTIONS[z] || [])) { cfg[id] = (cfg[id] || 0) + change; } const shells = Array(7).fill(0); for (const [id, n] of ORBITALS) shells[n - 1] += cfg[id] || 0; while (shells.length > 1 && shells[shells.length - 1] === 0) shells.pop(); return shells; }
+    const SHELL_CAPS = [2, 8, 18, 32, 32, 18, 8];
+    function adjustedShells(z, e) { const shells = neutralShells(z); if (e < z) { let amount = z - e; for (let i = shells.length - 1; i >= 0 && amount > 0; i--) { let take = Math.min(amount, shells[i]); shells[i] -= take; amount -= take; } } else if (e > z) { let amount = e - z; let idx = shells.length - 1; while (amount > 0 && idx < 7) { const available = SHELL_CAPS[idx] - shells[idx]; let add = Math.min(amount, Math.max(0, available)); shells[idx] += add; amount -= add; if (amount > 0) { idx++; if (idx < 7 && !shells[idx]) shells[idx] = 0; } } } while (shells.length > 1 && shells[shells.length - 1] === 0) shells.pop(); return shells; }
+    const $ = id => document.getElementById(id);
+    const state = { z: 1, e: 1, speed: 1, paused: false, autoRotate: false, filter: null, search: '', yaw: -.35, pitch: .4, zoom: 1, phase: 0 };
+    const grid = $('periodicGrid');
+    function makeTable() {
+      for (let z = 1; z <= 118; z++) {
+        const el = elements[z - 1], b = document.createElement('button'); b.type = 'button'; b.className = 'element'; b.dataset.z = z; b.style.gridColumn = el.c; b.style.gridRow = el.r; b.style.setProperty('--e-color', CATEGORIES[el.cat].color);
+        b.title = `${el.ar} • ${el.en} • ${z}`; b.setAttribute('aria-label', `${el.ar}، العدد الذري ${z}`);
+        b.innerHTML = `<span class="el-num">${z}</span><span class="el-symbol">${el.symbol}</span><span class="el-name" dir="rtl">${el.ar}</span>`;
+        b.addEventListener('click', () => selectElement(z)); grid.appendChild(b);
+      }
+      for (const [r, range] of [[6, '57–71'], [7, '89–103']]) { const placeholder = document.createElement('div'); placeholder.className = 'block-placeholder'; placeholder.style.gridRow = r; placeholder.textContent = range; grid.appendChild(placeholder); }
+      const legend = $('legend'); Object.entries(CATEGORIES).forEach(([id, cat]) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'legend-btn'; b.dataset.cat = id; b.style.setProperty('--e-color', cat.color); b.innerHTML = `<i class="legend-dot"></i>${cat.name}`; b.addEventListener('click', () => { state.filter = state.filter === id ? null : id; refreshFilter(); }); legend.appendChild(b); });
+    }
+    const normalize = t => String(t).toLocaleLowerCase('ar').normalize('NFKD').replace(/[\u064B-\u065F\u0670ـ]/g, '').replace(/[أإآ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي').trim();
+    function refreshFilter() { const q = normalize(state.search); document.querySelectorAll('.element').forEach(b => { const el = elements[Number(b.dataset.z) - 1]; let match = (!state.filter || el.cat === state.filter) && (!q || normalize(el.ar).includes(q) || el.en.toLowerCase().includes(q) || el.symbol.toLowerCase() === q || String(el.z) === q); b.classList.toggle('dim', !match); }); document.querySelectorAll('.legend-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === state.filter)); }
+    function selectElement(z) {
+      const el = elements[z - 1]; state.z = z; state.e = z; state.phase = 0;
+      document.querySelectorAll('.element.active').forEach(b => b.classList.remove('active'));
+      const btn = document.querySelector(`.element[data-z="${z}"]`); if (btn) btn.classList.add('active');
+      $('bigSymbol').style.setProperty('--current-color', CATEGORIES[el.cat].color); $('bigShort').textContent = el.symbol; $('bigZ').textContent = z;
+      $('bigName').textContent = el.ar; $('bigCat').textContent = `${CATEGORIES[el.cat].name} · الدورة ${el.r === 8 ? 6 : el.r === 9 ? 7 : el.r}`;
+      $('selectionHint').innerHTML = `العنصر المحدّد: <strong>${el.ar} (${el.symbol})</strong>`;
+      updateAtom();
+    }
+    function updateAtom() {
+      const el = elements[state.z - 1]; const ns = Math.max(0, Math.round(el.mass) - el.z); $('dataZ').textContent = el.z; $('dataP').textContent = el.z; $('dataN').textContent = ns; $('dataE').textContent = state.e;
+      const charge = el.z - state.e; $('dataCharge').textContent = charge === 0 ? 'متعادل' : `${charge > 0 ? '+' : '−'}${Math.abs(charge)}`;
+      $('dataCharge').style.color = charge === 0 ? '#8ff2c8' : charge > 0 ? '#ffc17c' : '#6ed9ff';
+      $('shells').textContent = adjustedShells(el.z, state.e).join(' · ');
+      if (renderer) renderer.updateGeometry(el.z, state.e, ns);
+    }
+    $('search').addEventListener('input', e => { state.search = e.target.value; refreshFilter(); });
+    $('search').addEventListener('keydown', e => { if (e.key === 'Enter') { const el = Array.from(document.querySelectorAll('.element')).find(b => !b.classList.contains('dim')); if (el) { selectElement(Number(el.dataset.z)); $('search').blur(); } } });
+    $('clearSearch').addEventListener('click', () => { state.search = ''; state.filter = null; $('search').value = ''; refreshFilter(); });
+    $('removeE').addEventListener('click', () => { if (state.e > 0) { state.e--; updateAtom(); } });
+    $('addE').addEventListener('click', () => { if (state.e < 118) { state.e++; updateAtom(); } });
+    $('neutral').addEventListener('click', () => { state.e = state.z; updateAtom(); });
+    $('speed').addEventListener('input', e => { state.speed = Number(e.target.value); $('speedValue').textContent = state.speed.toFixed(1) + '×'; });
+    $('pause').addEventListener('click', () => { state.paused = !state.paused; $('pause').textContent = state.paused ? 'استئناف' : 'إيقاف مؤقت'; });
+    $('resetAtom').addEventListener('click', () => { state.e = state.z; state.speed = 1; state.paused = false; state.autoRotate = false; state.phase = 0; $('speed').value = 1; $('speedValue').textContent = '1.0×'; $('pause').textContent = 'إيقاف مؤقت'; $('autoRotate').style.color = ''; updateAtom(); });
+    $('resetView').addEventListener('click', () => { state.yaw = -.35; state.pitch = .4; state.zoom = 1; });
+    $('autoRotate').addEventListener('click', () => { state.autoRotate = !state.autoRotate; $('autoRotate').style.color = state.autoRotate ? '#6df5cd' : ''; });
+    $('helpOpen').addEventListener('click', () => { $('helpModal').classList.add('show'); });
+    $('helpClose').addEventListener('click', () => { $('helpModal').classList.remove('show'); });
+    $('helpModal').addEventListener('click', e => { if (e.target === $('helpModal')) $('helpModal').classList.remove('show'); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') $('helpModal').classList.remove('show'); });
+
+    // Genuine 3D model rendered directly with WebGL, without CDN dependencies.
+    class AtomRenderer {
+      constructor(canvas) {
+        this.canvas = canvas; this.gl = canvas.getContext('webgl', { alpha: true, antialias: true, premultipliedAlpha: false }) || canvas.getContext('experimental-webgl'); this.points = []; this.rings = []; this.shells = []; this.radius = 2.3; this.isWebGL = !!this.gl;
+        if (this.gl) { this.initGl(); } else { this.ctx = canvas.getContext('2d'); }
+        this.bindPointer(); this.resize();
+      }
+      compile(type, src) { const g = this.gl, s = g.createShader(type); g.shaderSource(s, src); g.compileShader(s); if (!g.getShaderParameter(s, g.COMPILE_STATUS)) throw Error(g.getShaderInfoLog(s)); return s; }
+      createProgram(v, f) { const g = this.gl, p = g.createProgram(); g.attachShader(p, this.compile(g.VERTEX_SHADER, v)); g.attachShader(p, this.compile(g.FRAGMENT_SHADER, f)); g.linkProgram(p); if (!g.getProgramParameter(p, g.LINK_STATUS)) throw Error(g.getProgramInfoLog(p)); return p; }
+      initGl() {
+        const g = this.gl;
+        this.pp = this.createProgram(`attribute vec3 pos;attribute vec4 rgba;attribute float size;uniform mat4 mvp;uniform float pixelScale;varying vec4 color;varying float lighting;void main(){vec4 p=mvp*vec4(pos,1.);gl_Position=p;gl_PointSize=clamp(size*pixelScale*(1.0+0.20*pos.z/8.0),2.0,85.0);color=rgba;lighting=pos.z;}`,
+          `precision mediump float;varying vec4 color;varying float lighting;void main(){vec2 xy=gl_PointCoord*2.0-1.0;float r=dot(xy,xy);if(r>1.0)discard;vec3 n=vec3(xy,sqrt(max(0.0,1.0-r)));float light=0.30+0.70*max(dot(normalize(vec3(-0.45,0.65,1.0)),n),0.0);float glow=pow(1.0-sqrt(r),1.65);vec3 rgb=color.rgb*(light+glow*0.38);float a=color.a*min(1.0,(1.0-smoothstep(.78,1.0,sqrt(r)))*1.25);gl_FragColor=vec4(rgb,a);}`);
+        this.lp = this.createProgram(`attribute vec3 pos;uniform mat4 mvp;void main(){gl_Position=mvp*vec4(pos,1.);}`, `precision mediump float;uniform vec4 lineColor;void main(){gl_FragColor=lineColor;}`);
+        this.pb = g.createBuffer(); this.lb = g.createBuffer();
+        this.pAttr = { pos: g.getAttribLocation(this.pp, 'pos'), rgba: g.getAttribLocation(this.pp, 'rgba'), size: g.getAttribLocation(this.pp, 'size'), mvp: g.getUniformLocation(this.pp, 'mvp'), scale: g.getUniformLocation(this.pp, 'pixelScale') };
+        this.lAttr = { pos: g.getAttribLocation(this.lp, 'pos'), mvp: g.getUniformLocation(this.lp, 'mvp'), color: g.getUniformLocation(this.lp, 'lineColor') };
+        g.enable(g.BLEND); g.blendFunc(g.SRC_ALPHA, g.ONE_MINUS_SRC_ALPHA); g.enable(g.DEPTH_TEST); g.depthFunc(g.LEQUAL);
+      }
+      resize() { const rect = this.canvas.getBoundingClientRect(); if (rect.width < 1 || rect.height < 1) return; const dpr = Math.min(window.devicePixelRatio || 1, 2); let w = Math.round(rect.width * dpr), h = Math.round(rect.height * dpr); if (this.canvas.width !== w || this.canvas.height !== h) { this.canvas.width = w; this.canvas.height = h; } this.w = w; this.h = h; this.scale = dpr; if (this.gl) this.gl.viewport(0, 0, w, h); }
+      updateGeometry(z, e, n) {
+        this.shells = adjustedShells(z, e); const cnt = this.shells.length; this.radius = cnt === 1 ? 2.30 : 1.35 + 0.64 * (cnt - 1);
+        const total = z + n; this.nucleus = []; const rad = total === 1 ? .05 : Math.min(.73, .16 + .043 * Math.cbrt(total));
+        // Uniform volume placement, with a seeded arrangement for reproducible nuclei.
+        const sequence = []; for (let i = 0; i < z; i++)sequence.push(0); for (let i = 0; i < n; i++)sequence.push(1);
+        for (let i = sequence.length - 1; i > 0; i--) { const j = (i * 73 + z * 29) % (i + 1);[sequence[i], sequence[j]] = [sequence[j], sequence[i]]; }
+        for (let i = 0; i < total; i++) { const golden = 2.399963229728653; const zz = 1 - 2 * (i + .5) / total; const theta = i * golden; const rr = Math.sqrt(Math.max(0, 1 - zz * zz)) * rad * Math.cbrt((i + 1) / total); let x = Math.cos(theta) * rr, y = Math.sin(theta) * rr, w = zz * rad * Math.cbrt((i + 1) / total); this.nucleus.push([x, y, w, sequence[i] === 0 ? 1 : 2]); }
+        this.orbits = []; this.electrons = [];
+        for (let s = 0; s < cnt; s++) {
+          const r = cnt === 1 ? 2.25 : 1.2 + (.64 * s); const ax = (s % 2 ? 1 : -1) * (.27 + s * .21), ay = s * .46 + .12;
+          const along = vec => { const [x, y, z] = vec; const cy = Math.cos(ay), sy = Math.sin(ay), cx = Math.cos(ax), sx = Math.sin(ax); return [x * cy + z * sy, y * cx - (z * cy - x * sy) * sx, y * sx + (z * cy - x * sy) * cx]; };
+          const ring = []; for (let k = 0; k <= 144; k++) { const t = k * Math.PI * 2 / 144; ring.push(along([r * Math.cos(t), r * Math.sin(t), 0])); }
+          this.orbits.push(ring);
+          for (let j = 0; j < this.shells[s]; j++) { this.electrons.push({ s, j, count: this.shells[s], r, along, phase: (j / Math.max(this.shells[s], 1)) * Math.PI * 2 + (s * .38) }); }
+        }
+      }
+      bindPointer() {
+        const c = this.canvas; let dragging = false, lastX = 0, lastY = 0, lastPinch = 0;
+        c.addEventListener('pointerdown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; c.setPointerCapture(e.pointerId); c.classList.add('dragging'); });
+        c.addEventListener('pointermove', e => { if (!dragging || e.pointerType === 'touch' && this.touches && this.touches.size > 1) return; const dx = e.clientX - lastX, dy = e.clientY - lastY; state.yaw += dx * .009; state.pitch = Math.max(-1.5, Math.min(1.5, state.pitch + dy * .009)); lastX = e.clientX; lastY = e.clientY; });
+        const end = e => { dragging = false; c.classList.remove('dragging'); try { c.releasePointerCapture(e.pointerId); } catch (_e) { } };
+        c.addEventListener('pointerup', end); c.addEventListener('pointercancel', end);
+        c.addEventListener('wheel', e => { e.preventDefault(); state.zoom = Math.max(.58, Math.min(1.9, state.zoom * Math.exp(e.deltaY * .001))); }, { passive: false });
+        this.touches = new Map(); c.addEventListener('pointerdown', e => { if (e.pointerType === 'touch') { this.touches.set(e.pointerId, [e.clientX, e.clientY]); if (this.touches.size === 2) { const a = [...this.touches.values()]; lastPinch = Math.hypot(a[0][0] - a[1][0], a[0][1] - a[1][1]); } } });
+        c.addEventListener('pointermove', e => { if (e.pointerType === 'touch' && this.touches.has(e.pointerId)) { this.touches.set(e.pointerId, [e.clientX, e.clientY]); if (this.touches.size === 2) { const a = [...this.touches.values()]; const dist = Math.hypot(a[0][0] - a[1][0], a[0][1] - a[1][1]); if (lastPinch > 0) state.zoom = Math.max(.58, Math.min(1.9, state.zoom * lastPinch / Math.max(1, dist))); lastPinch = dist; } } });
+        const remove = e => this.touches.delete(e.pointerId); c.addEventListener('pointerup', remove); c.addEventListener('pointercancel', remove);
+      }
+      render() {
+        this.resize(); if (!this.w || !this.h) return; const w = this.w, h = this.h;
+        const aspect = w / h, dist = this.radius * 3.35 * state.zoom * Math.max(1, .96 / aspect);
+        const projection = perspective(.80, aspect, .1, 150); const rotation = multiply(rotateY(state.yaw), rotateX(state.pitch)); const view = translate(0, 0, -dist); const mvp = multiply(projection, multiply(view, rotation));
+        const current = []; for (const nuc of this.nucleus) { const [x, y, z, type] = nuc; const size = (this.nucleus.length < 4 ? 32 : this.nucleus.length < 25 ? 13 : Math.max(5.2, 10 - this.nucleus.length / 65)); const rgb = type === 1 ? [1, .57, .47] : [.75, .62, 1]; current.push(x, y, z, ...rgb, 1, size); }
+        const electronSize = this.electrons.length > 60 ? 10 : this.electrons.length > 20 ? 12 : 16;
+        for (const el of this.electrons) { const a = el.phase + state.phase * (1.95 / Math.sqrt(el.s + 1)); const [x, y, z] = el.along([el.r * Math.cos(a), el.r * Math.sin(a), 0]); current.push(x, y, z, .22, .91, 1, 1, electronSize); }
+        if (this.isWebGL) {
+          const g = this.gl; g.clearColor(0, 0, 0, 0); g.clear(g.COLOR_BUFFER_BIT | g.DEPTH_BUFFER_BIT);
+          g.useProgram(this.lp); g.uniformMatrix4fv(this.lAttr.mvp, false, mvp); g.bindBuffer(g.ARRAY_BUFFER, this.lb);
+          g.enableVertexAttribArray(this.lAttr.pos); g.vertexAttribPointer(this.lAttr.pos, 3, g.FLOAT, false, 0, 0);
+          g.depthMask(false); for (let s = 0; s < this.orbits.length; s++) { const ring = new Float32Array(this.orbits[s].flat()); g.bufferData(g.ARRAY_BUFFER, ring, g.DYNAMIC_DRAW); const hue = s % 2 === 0 ? [.21, .78, 1] : [.43, .59, 1]; g.uniform4f(this.lAttr.color, ...hue, s < 3 ? .58 : .34); g.drawArrays(g.LINE_STRIP, 0, ring.length / 3); } g.depthMask(true);
+          g.useProgram(this.pp); g.uniformMatrix4fv(this.pAttr.mvp, false, mvp); g.uniform1f(this.pAttr.scale, Math.min(2.25, Math.max(.7, h / 500)));
+          g.bindBuffer(g.ARRAY_BUFFER, this.pb); g.bufferData(g.ARRAY_BUFFER, new Float32Array(current), g.DYNAMIC_DRAW);
+          const stride = 8 * 4; for (const [key, size, offset] of [['pos', 3, 0], ['rgba', 4, 12], ['size', 1, 28]]) { const loc = this.pAttr[key]; g.enableVertexAttribArray(loc); g.vertexAttribPointer(loc, size, g.FLOAT, false, stride, offset); } g.drawArrays(g.POINTS, 0, current.length / 8);
+        } else { this.renderFallback(current, mvp); }
+      }
+      renderFallback(points, mvp) { const ctx = this.ctx, w = this.w, h = this.h; ctx.clearRect(0, 0, w, h); for (const ring of this.orbits) { ctx.strokeStyle = 'rgba(55,189,255,.5)'; ctx.lineWidth = 1.5; ctx.beginPath(); ring.forEach(([x, y, z], idx) => { const p = project(mvp, [x, y, z], w, h); if (idx === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]); }); ctx.stroke(); } const sort = []; for (let i = 0; i < points.length; i += 8) { const p = project(mvp, points.slice(i, i + 3), w, h); sort.push([...p, ...points.slice(i + 3, i + 8)]); } sort.sort((a, b) => b[2] - a[2]); for (const [x, y, z, r, g, b, a, size] of sort) { const sz = size * Math.min(2, Math.max(.7, h / 500)); ctx.beginPath(); ctx.fillStyle = `rgba(${Math.floor(r * 255)},${Math.floor(g * 255)},${Math.floor(b * 255)},${a})`; ctx.arc(x, y, sz / 2, 0, Math.PI * 2); ctx.fill(); } }
+    }
+    function identity() { return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]; }
+    function multiply(a, b) { const out = new Float32Array(16); for (let c = 0; c < 4; c++)for (let r = 0; r < 4; r++) { out[c * 4 + r] = a[r] * b[c * 4] + a[4 + r] * b[c * 4 + 1] + a[8 + r] * b[c * 4 + 2] + a[12 + r] * b[c * 4 + 3]; } return out; }
+    function perspective(fov, aspect, near, far) { const f = 1 / Math.tan(fov / 2), nf = 1 / (near - far); return new Float32Array([f / aspect, 0, 0, 0, 0, f, 0, 0, 0, 0, (far + near) * nf, -1, 0, 0, 2 * far * near * nf, 0]); }
+    function translate(x, y, z) { const m = identity(); m[12] = x; m[13] = y; m[14] = z; return m; }
+    function rotateX(t) { const c = Math.cos(t), s = Math.sin(t); return [1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1]; }
+    function rotateY(t) { const c = Math.cos(t), s = Math.sin(t); return [c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1]; }
+    function project(m, [x, y, z], w, h) { const px = m[0] * x + m[4] * y + m[8] * z + m[12], py = m[1] * x + m[5] * y + m[9] * z + m[13], pz = m[2] * x + m[6] * y + m[10] * z + m[14], pw = m[3] * x + m[7] * y + m[11] * z + m[15]; return [(px / pw + 1) * w / 2, (1 - py / pw) * h / 2, pz / pw]; }
+    let renderer = null; makeTable();
+    try { renderer = new AtomRenderer($('atomCanvas')); } catch (err) { console.warn('WebGL setup failed:', err); const c = $('atomCanvas'); const replacement = c.cloneNode(); c.replaceWith(replacement); renderer = new AtomRenderer(replacement); }
+    selectElement(1); refreshFilter();
+    let last = 0; function loop(timestamp) { const delta = Math.min(.050, (timestamp - last) / 1000 || .016); last = timestamp; if (!state.paused) { state.phase += delta * state.speed; if (state.autoRotate) state.yaw += delta * .25; } if (renderer) renderer.render(); requestAnimationFrame(loop); }
+    requestAnimationFrame(loop);
+    window.addEventListener('resize', () => renderer && renderer.resize());
+    window.addEventListener('orientationchange', () => setTimeout(() => renderer && renderer.resize(), 150));
+  </script>
+</body>
+
+</html>
